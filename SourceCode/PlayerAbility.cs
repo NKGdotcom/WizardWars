@@ -4,41 +4,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// プレイヤーの能力設定(ここを増やせば能力も増やせる)
+/// </summary>
 [CreateAssetMenu(fileName = "PlayerAbility", menuName = "ScriptableObjects/Player/PlayerAbility")]
 public class PlayerAbility : ScriptableObject
 {
     [System.Serializable]
-    public class KindOfAbility
+    public class AbilityData
     {
         [Header("能力一覧")]
-        public Ability abilityType;
+        public EnumPlayerAbilityType.PlayerAbilityType abilityType;
         [Header("能力のイメージ画像")]
         public Sprite abilityImage;
         [Header("発射する弾")]
-        public GameObject bulletPurefabs;
+        public GameObject bulletPrefab;
         [Header("発射効果音")]
         public AudioClip abilitySE;
-        [Header("必殺技名")]
-        public string specialName;
-        public KindOfAbility(Ability abilityType, Sprite abilityImage, GameObject bulletPrefabs,AudioClip abilitySe, string specialName)
+
+        public AbilityData(EnumPlayerAbilityType.PlayerAbilityType abilityType, Sprite abilityImage, GameObject bulletPrefab, AudioClip abilitySE) // abilitySe から abilitySE に修正
         {
             this.abilityType = abilityType;
-            this.abilityImage = abilityImage;  
-            this.bulletPurefabs = bulletPrefabs;
-            this.abilitySE = abilitySe;
-            this.specialName = specialName;
+            this.abilityImage = abilityImage;
+            this.bulletPrefab = bulletPrefab;
+            this.abilitySE = abilitySE;
         }
     }
-    public List<KindOfAbility> abilityList = new List<KindOfAbility>();
 
-    public KindOfAbility GetAbility(Ability abilityType)
+    public List<AbilityData> abilityList = new List<AbilityData>();
+
+    public AbilityData GetAbility(int _index)
     {
-        foreach (KindOfAbility ability in abilityList)
+        if(_index >= 0 && _index < abilityList.Count)
         {
-            if (ability.abilityType == abilityType)
-            {
-                return new KindOfAbility(ability.abilityType, ability.abilityImage, ability.bulletPurefabs,ability.abilitySE,ability.specialName);
-            }
+            return abilityList[_index];
         }
         return null;
     }
